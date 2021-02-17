@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-// const generatePage = require('./src/page-template.js');
-// const generateSite = require('./src/generate-site.js');
-// const { writeFile, copyFile } = require('./src/generate-site.js');
+const generatePage = require('./src/page-template.js');
+const generateSite = require('./src/generate-site.js');
+const { writeFile, copyFile } = require('./src/generate-site.js');
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -36,16 +36,28 @@ const promptUser = () => {
             type: 'input',
             name: 'managerEmail',
             message: "Please enter manager's email address. (Required)",
-            validate: managerEmailInput => {
-                if (managerEmailInput) {
-                    return true;
-                } else {
-                    console.log("Please enter manager's email address!");
-                    return false;
+            // validate: managerEmailInput => {
+            //     if (managerEmailInput) {
+            //         return true;
+            //     } else {
+            //         console.log("Please enter manager's email address!");
+            //         return false;
+            //     }
+            // }
+            default: () => {},
+            validate: function (email) {
+  
+              valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+  
+              if (valid) {
+                console.log("Great job");
+                  return true;
+              } else {
+                  console.log(".  Please enter a valid email")
+                  return false;
                 }
             }
-
-        },
+        },  
         {
             type: 'input',
             name: 'managerOffice',
@@ -62,11 +74,11 @@ const promptUser = () => {
     ])
 };
 
-const enterEmployee = (newEmployee) => {
+const enterEmployee = (managerData) => {
 
-    if (!newEmployee.details) {
-        newEmployee.details = [];
-    }
+    // if (!employeesArray) {
+        employeesArray = [];
+    // }
 
     return inquirer.prompt([
 
@@ -84,45 +96,145 @@ const enterEmployee = (newEmployee) => {
             }
         },
         {
+            type: 'input',
+            name: 'employeeId',
+            message: "Please enter employee's ID number. (Required)",
+            validate: employeeIdInput => {
+                if (employeeIdInput) {
+                    return true;
+                } else {
+                    console.log("Please enter employee's ID number!");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'employeeEmail',
+            message: "Please enter employee's email address. (Required)",
+            // validate: employeeEmailInput => {
+            //     if (employeeEmailInput) {
+            //         return true;
+            //     } else {
+            //         console.log("Please enter employee's email address!");
+            //         return false;
+            //     }
+            // }
+            default: () => {},
+            validate: function (email) {
+  
+              valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+  
+              if (valid) {
+                console.log("Great job");
+                  return true;
+              } else {
+                  console.log(".  Please enter a valid email")
+                  return false;
+                }
+            }
+
+        },
+
+        {
             type: 'list',
             name: 'role',
             message: "Please choose an employee type",
             choices: ['Intern', 'Engineer'],
         },
 
+    ])
+
+        .then(({ employeeName, role, employeeEmail, employeeId}) => {
+
+            if (role === 'Intern') {
+                getInternData(enterEmployee)
+            
+            } else {
+                getEngineerData(enterEmployee)
+                
+            }
+
+        },
+        );
+
+};
+
+function getInternData(employeeInfo) {
+    return inquirer.prompt([
+
         {
             type: 'input',
             name: 'school',
             message: "Please enter name of the school"
         },
+        {
+            type: 'confirm',
+            name: 'employeeConfirm',
+            message: "Would you like to enter a new employee?",
+            default: false
+        },
+
+    ])
+        .then(getInternData => {
+            // employeesArray.push(getInternData);
+            if (getInternData.employeeConfirm) {
+                return enterEmployee(getInternData);
+            } else {
+                return promptUser;
+            }
+
+        });
+};
+
+function getEngineerData(employeeInfo) {
+    return inquirer.prompt([
 
         {
             type: 'input',
             name: 'Github',
             message: 'Please enter Github username'
         },
-
         {
             type: 'confirm',
             name: 'employeeConfirm',
             message: "Would you like to enter a new employee?",
             default: false
-        }
+        },
+
     ])
-    
-        .then(arrayData => {
-            newEmployee.details.push(arrayData);
-            if (arrayData.employeeConfirm) {
-                return enterEmployee(newEmployee);
+        .then(getEngineerData => {
+            // employeesArray.push(getEngineerData);
+            if (getEngineerData.employeeConfirm) {
+                return enterEmployee(getEngineerData);
             } else {
                 return promptUser;
             }
 
-        },
-    );
+
+        });
 
 };
 
 
 promptUser()
     .then(enterEmployee)
+    .then(employeesArray => {
+        const pageHTML = generatePage(employeesArray)
+
+        fs.writeFile('.dist/index.html', pageHTML, err => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log("Page created!  Please check out index.html")
+
+            fs.copyFile('./scr/style.css', './dist/style.css', err => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log("Stylesheet created successfully!")
+            });
+        });
+    });

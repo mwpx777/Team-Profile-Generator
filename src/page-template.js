@@ -3,12 +3,13 @@ const generateEmployees = employeesArray => {
     return `
    
         ${employeesArray
-            .map(({ employeeName, employeeEmail, role, employeeId, school, github }) => {
+            .map(({ employeeName, employeeEmail, role, employeeId, school, Github, officeNumber, teamName }) => {
             return `
             
             <div class="card border-primary" style="width: 18rem;">
             <div class="card-body bg-primary text-light">
                 <h3 class="card-title">${employeeName}</h3>
+                ${displayTeam(teamName)}
                 <div class="personTitle">
                    ${createIcon(role)}
                     <h5 class="title"> ${role}</h5>
@@ -17,8 +18,9 @@ const generateEmployees = employeesArray => {
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">ID: ${employeeId}</li>
                 <li class="list-group-item">Email: <a href="mailto:${employeeEmail}">${employeeEmail}</a></li>
+                ${displayOffice(officeNumber)}
                 ${displaySchool(school)}
-                ${displayGithub(github)}
+                ${displayGithub(Github)}
                
                
             </ul>
@@ -32,7 +34,7 @@ const generateEmployees = employeesArray => {
 
 module.exports = employeesArray => {
 
-    const { managerName, managerId, managerEmail, managerOffice, ...rest } = employeesArray[0];
+   
 
 
     return `
@@ -54,21 +56,8 @@ module.exports = employeesArray => {
        
     </header>
     <div class="container">
-    <div class="row">
-        <div class="card border-primary" style="width: 18rem;">
-            <div class="card-body bg-primary text-light">
-                <h3 class="card-title">${managerName}</h3>
-                <div class="personTitle">
-                    <i class="fas fa-coffee" id="icon"></i>
-                    <h5 class="title"> Manager</h5>
-                </div>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${managerId}</li>
-                <li class="list-group-item">Email: <a href="mailto:${managerEmail}.com">${managerEmail}</a></li>
-                <li class="list-group-item">Office Number: ${managerOffice}</li>
-            </ul>
-        </div>
+        <div class="row">
+   
           ${generateEmployees(employeesArray)}
     </div>
     </div>
@@ -83,14 +72,16 @@ module.exports = employeesArray => {
 function createIcon(role) {
     if (role == 'Intern') {
         return `<i class="fas fa-user-graduate" id="icon"></i>`
-    } else {
+    } else if (role == "Engineer"){
         return `<i class="fas fa-laptop-code" id="icon"></i>`
+    }else {(role == 'Manager') 
+        return `<i class="fas fa-coffee" id="icon"></i>`
     }
 }
 
 
 function displaySchool(school) {
-    if (!school =='') {
+    if (!school == " ") {
         return `<li class="list-group-item">School: ${school}</li>`
     } else {
         return ``
@@ -98,9 +89,25 @@ function displaySchool(school) {
     }
 }
 
-function displayGithub(github) {
-    if (github == '') {
-        return `<li class="list-group-item">Github: <a href="https://github.com/john" target="_blank">${Github}</a></li>`
+function displayGithub(Github) {
+    if (!Github == '' ) {
+        return `<li class="list-group-item">Github: <a href="https://github.com/${Github}" target="_blank">${Github}</a></li>`
+    } else {
+        return ``
+    }
+}
+
+function displayOffice(officeNumber) {
+    if (!officeNumber == '') {
+        return `<li class="list-group-item">Office Number: ${officeNumber}</li>`
+    } else {
+        return ``
+    }
+}
+
+function displayTeam(teamName) {
+    if (!teamName == '') {
+        return `<h4> ${teamName}</h4>`
     } else {
         return ``
     }

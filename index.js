@@ -5,14 +5,43 @@ const generateSite = require('./src/generate-site.js');
 const { writeFile, copyFile } = require('./src/generate-site.js');
 let employeesArray = [];
 
-const promptUser = () => {
+
+const newEmployee = () => {
+    return inquirer.prompt([
+        {
+            type: 'list',
+            name: 'role',
+            message: "Welcome to the Team Profile Generator! Please make a selection",
+            choices: [ 'Manager','Intern', 'Engineer' , 'Complete Roster'],
+        }])
+        .then(({ role }) => {
+
+            if (role === 'Intern') {
+                getInternData(role)
+
+            } else if (role === 'Complete Roster') {
+                finishRoster()
+
+            } else if (role === 'Engineer'){
+                 getEngineerData(role)
+
+            }else { (role === "Manager") 
+                managerInfo(role)
+
+            }
+        })
+};
+
+const managerInfo = (role) => {
+    this.role = role
+    console.log(this.role)
     return inquirer.prompt([
         {
             type: 'input',
-            name: 'managerName',
+            name: 'employeeName',
             message: "Please enter manager's name. (Required)",
-            validate: managerNameInput => {
-                if (managerNameInput) {
+            validate: employeeNameInput => {
+                if (employeeNameInput) {
                     return true;
                 } else {
                     console.log("Please enter a name!");
@@ -21,11 +50,23 @@ const promptUser = () => {
             }
         },
         {
+        type: 'prompt',
+        name: 'role',
+        message: "Please verify the employee's role",
+        default: 'Manager'
+        },
+        {
             type: 'input',
-            name: 'managerId',
+            name: 'teamName',
+            message: "Please enter a team name",
+           
+        },
+        {
+            type: 'input',
+            name: 'employeeId',
             message: "Please enter manager's ID number. (Required)",
-            validate: managerIdInput => {
-                if (managerIdInput) {
+            validate: employeeIdInput => {
+                if (employeeIdInput) {
                     return true;
                 } else {
                     console.log("Please enter manager's ID number!");
@@ -35,7 +76,7 @@ const promptUser = () => {
         },
         {
             type: 'input',
-            name: 'managerEmail',
+            name: 'employeeEmail',
             message: "Please enter manager's email address. (Required)",
             default: () => { },
             validate: function (email) {
@@ -52,10 +93,10 @@ const promptUser = () => {
         },
         {
             type: 'input',
-            name: 'managerOffice',
+            name: 'officeNumber',
             message: "Please enter manager's office number. (Required)",
-            validate: managerOfficeInput => {
-                if (managerOfficeInput) {
+            validate: officeNumberInput => {
+                if (officeNumberInput) {
                     return true;
                 } else {
                     console.log("Please enter manager's office number!");
@@ -65,108 +106,12 @@ const promptUser = () => {
         },
     ])
     .then(managerData => {
-        employeesArray.push(managerData);
         
+        employeesArray.push(managerData);
+        console.log(managerData)
         newEmployee()
     });
 };
-const newEmployee = () => {
-    return inquirer.prompt([
-        {
-            type: 'list',
-            name: 'role',
-            message: "Please choose an employee type",
-            choices: ['Intern', 'Engineer' , 'Complete Roster'],
-        }])
-        .then(({ role }) => {
-
-            if (role === 'Intern') {
-                getInternData(role)
-
-            } else if (role === 'Complete Roster') {
-                finishRoster()
-
-            } else {
-                getEngineerData(role)
-            }
-        })
-}
-
-// const enterEmployee = (managerData) => {
-//     console.log(managerData);
-//     // if (!employeesArray) {
-//     employeesArray = [];
-//     // }
-
-// return inquirer.prompt([
-//     {
-//         type: 'input',
-//         name: 'employeeName',
-//         message: "Please enter employee name",
-//         validate: employeeNameInput => {
-//             if (employeeNameInput) {
-//                 return true;
-//             } else {
-//                 console.log("Please enter employee's name!");
-//                 return false;
-//             }
-//         }
-//     },
-//     {
-//         type: 'input',
-//         name: 'employeeId',
-//         message: "Please enter employee's ID number. (Required)",
-//         validate: employeeIdInput => {
-//             if (employeeIdInput) {
-//                 return true;
-//             } else {
-//                 console.log("Please enter employee's ID number!");
-//                 return false;
-//             }
-//         }
-//     },
-//     {
-//         type: 'input',
-//         name: 'employeeEmail',
-//         message: "Please enter employee's email address. (Required)",
-//         default: () => { },
-//         validate: function (email) {
-
-//             valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-
-//             if (valid) {
-//                 return true;
-//             } else {
-//                 console.log("Please enter a valid email!")
-//                 return false;
-//             }
-//         }
-
-//     },
-
-//     {
-//         type: 'list',
-//         name: 'role',
-//         message: "Please choose an employee type",
-//         choices: ['Intern', 'Engineer'],
-//     },
-
-// ])
-
-//     .then(({ employeeName, role, employeeEmail, employeeId }) => {
-
-//         if (role === 'Intern') {
-//             getInternData(managerData)
-
-//         } else {
-//             getEngineerData(managerData)
-
-//         }
-
-//     },
-//     );
-
-// };
 
 
 function getInternData(role) {
@@ -177,31 +122,31 @@ function getInternData(role) {
         {
             type: 'input',
             name: 'employeeName',
-            message: "Please enter employee name",
+            message: "Please enter Intern's name",
             validate: employeeNameInput => {
                 if (employeeNameInput) {
                     return true;
                 } else {
-                    console.log("Please enter employee's name!");
+                    console.log("Please enter Intern's name!");
                     return false;
                 }
             }
         },
         {
-            type: 'list',
+            type: 'prompt',
             name: 'role',
-            message: "Please choose the employee's role",
-            choices: ['Intern'],
+            message: "Please verify the employee's position",
+            default: 'Intern'
         },
         {
             type: 'input',
             name: 'employeeId',
-            message: "Please enter employee's ID number. (Required)",
+            message: "Please enter Intern's ID number. (Required)",
             validate: employeeIdInput => {
                 if (employeeIdInput) {
                     return true;
                 } else {
-                    console.log("Please enter employee's ID number!");
+                    console.log("Please enter Intern's ID number!");
                     return false;
                 }
             }
@@ -210,7 +155,7 @@ function getInternData(role) {
 
             type: 'input',
             name: 'employeeEmail',
-            message: "Please enter employee's email address. (Required)",
+            message: "Please enter Intern's email address. (Required)",
             default: () => { },
             validate: function (email) {
 
@@ -225,19 +170,12 @@ function getInternData(role) {
             }
 
         },
-
-
         {
             type: 'input',
             name: 'school',
-            message: "Please enter name of the school"
+            message: "Please enter name of the Intern's school"
         },
-        // {
-        //     type: 'confirm',
-        //     name: 'employeeConfirm',
-        //     message: "Would you like to enter a new employee?",
-        //     default: false
-        // },
+     
 
     ])
         .then(getInternData => {
@@ -255,31 +193,31 @@ function getEngineerData(role) {
         {
             type: 'input',
             name: 'employeeName',
-            message: "Please enter employee name",
+            message: "Please enter Engineer's name",
             validate: employeeNameInput => {
                 if (employeeNameInput) {
                     return true;
                 } else {
-                    console.log("Please enter employee's name!");
+                    console.log("Please enter Engineer's name!");
                     return false;
                 }
             }
         },
         {
-            type: 'list',
+            type: 'prompt',
             name: 'role',
-            message: "Please choose the employee's role",
-            choices: ['Engineer'],
+            message: "Please choose the Engineer's role",
+            default: 'Engineer'
         },
         {
             type: 'input',
             name: 'employeeId',
-            message: "Please enter employee's ID number. (Required)",
+            message: "Please enter Engineer's ID number. (Required)",
             validate: employeeIdInput => {
                 if (employeeIdInput) {
                     return true;
                 } else {
-                    console.log("Please enter employee's ID number!");
+                    console.log("Please enter Engineer's ID number!");
                     return false;
                 }
             }
@@ -288,7 +226,7 @@ function getEngineerData(role) {
 
             type: 'input',
             name: 'employeeEmail',
-            message: "Please enter employee's email address. (Required)",
+            message: "Please enter Engineer's email address. (Required)",
             default: () => { },
             validate: function (email) {
 
@@ -307,14 +245,9 @@ function getEngineerData(role) {
         {
             type: 'input',
             name: 'Github',
-            message: 'Please enter Github username'
+            message: "Please enter Engineer's Github username"
         },
-        // {
-        //     type: 'confirm',
-        //     name: 'employeeConfirm',
-        //     message: "Would you like to enter a new employee?",
-        //     default: false
-        // },
+   
 
     ])
         .then(getEngineerData => {
@@ -327,11 +260,11 @@ function getEngineerData(role) {
 };
 
 
-promptUser()
+newEmployee()
  
 function finishRoster() {
     
-        console.log('employeesArray', employeesArray)
+        // console.log('employeesArray', employeesArray)
         const pageHTML = generatePage(employeesArray)
 
         fs.writeFile('./dist/index.html', pageHTML, err => {
@@ -341,13 +274,7 @@ function finishRoster() {
             }
             console.log("Page created! Please check out index.html")
 
-            // fs.copyFile('./scr/style.css', './dist/style.css', err => {
-            //     if (err) {
-            //         console.log(err);
-            //         return;
-            //     }
-            //     console.log("Stylesheet created successfully!")
-            // });
+         
         });
     };
 

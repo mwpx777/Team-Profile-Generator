@@ -35,3 +35,9 @@ h1 {
 .row {
     justify-content: space-around;
 }
+.card {
+    box-shadow: 5px 5px 10px rgb(49, 49, 49);
+}
+.page-title {
+    box-shadow: 5px 5px 10px rgb(15, 15, 15);
+}

@@ -1,34 +1,39 @@
 const generateEmployees = employeesArray => {
 
     return `
-    <div class="row">
-    <div class="card border-primary" style="width: 18rem;">
-        <div class="card-body bg-primary text-light">
+   
         ${employeesArray
-            .map(({ employeeName, employeeEmail, role, employeeId, school, Github }) => {
-                return `
-            <h3 class="card-title">${employeeName}</h3>
-            <div class="personTitle">
-                ${createIcon()}
-                <h5 class="title"> ${role}</h5>
-            </div>
+            .map(({ employeeName, employeeEmail, role, employeeId, school, github }) => {
+            return `
+            
+            <div class="card border-primary" style="width: 18rem;">
+            <div class="card-body bg-primary text-light">
+                <h3 class="card-title">${employeeName}</h3>
+                <div class="personTitle">
+                   ${createIcon(role)}
+                    <h5 class="title"> ${role}</h5>
+                </div>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">ID: ${employeeId}</li>
                 <li class="list-group-item">Email: <a href="mailto:${employeeEmail}">${employeeEmail}</a></li>
-                ${listItem()}
+                ${displaySchool(school)}
+                ${displayGithub(github)}
+               
+               
             </ul>
-            </div>
+        </div>
             `;
             })
             .join('')}
-    </div>   
+           
     `
 }
 
-module.exports = templateData => {
+module.exports = employeesArray => {
 
-    const { managerName, managerId, managerEmail, managerOffice, ...header } = templateData;
+    const { managerName, managerId, managerEmail, managerOffice, ...rest } = employeesArray[0];
+
 
     return `
     <!DOCTYPE html> 
@@ -60,11 +65,12 @@ module.exports = templateData => {
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">ID: ${managerId}</li>
-                <li class="list-group-item">Email: <a href="mailto:${managerEmail}">${managerEmail}</a></li>
+                <li class="list-group-item">Email: <a href="mailto:${managerEmail}.com">${managerEmail}</a></li>
                 <li class="list-group-item">Office Number: ${managerOffice}</li>
             </ul>
         </div>
-        ${generateEmployees(employeesArray)}
+          ${generateEmployees(employeesArray)}
+    </div>
     </div>
 
 
@@ -76,16 +82,26 @@ module.exports = templateData => {
 
 function createIcon(role) {
     if (role == 'Intern') {
-        return '<i class="fas fa-user-graduate" id="icon"></i>'
+        return `<i class="fas fa-user-graduate" id="icon"></i>`
     } else {
-        return '<i class="fas fa-laptop-code" id="icon"></i>'
+        return `<i class="fas fa-laptop-code" id="icon"></i>`
     }
 }
 
-function listItem(role) {
-    if (role == 'Intern') {
-        return '<li class="list-group-item">School: ${school}</li>'
+
+function displaySchool(school) {
+    if (!school =='') {
+        return `<li class="list-group-item">School: ${school}</li>`
     } else {
-        return '<li class="list-group-item">Github: <a href="https://github.com/${Github}" target="_blank">${Github}</a></li>'
+        return ``
+
+    }
+}
+
+function displayGithub(github) {
+    if (github == '') {
+        return `<li class="list-group-item">Github: <a href="https://github.com/john" target="_blank">${Github}</a></li>`
+    } else {
+        return ``
     }
 }

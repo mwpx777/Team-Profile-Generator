@@ -1,13 +1,23 @@
 const Employee = require('../lib/Employee.js')
 
 
+// test('create new employee object', () => {
+//     const employee = new Employee('Mark')
+
+//     expect(employee.name).toBe('Mark');
+//     expect(employee.id).toEqual(expect.any(Number));
+//     // expect(employee.email).toMatch('mwpx777@gmail.com');
+//     expect(employee.email).toEqual(expect.any(String));
+// });
+
 test('create new employee object', () => {
     const employee = new Employee('Mark')
+   
 
-    expect(employee.name).toBe('Mark');
-    expect(employee.id).toEqual(expect.any(Number));
-    // expect(employee.email).toMatch('mwpx777@gmail.com');
-    expect(employee.email).toEqual(expect.any(String));
+    expect(employee.employeeName).toEqual(expect.any(String));
+    expect(employee.employeeId).toEqual(expect.any(String));
+    
+    // expect(employee.employeeEmail).toEqual(expect.any(String));
 });
 
 test('get an employees name', () => {

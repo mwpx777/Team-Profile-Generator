@@ -106,14 +106,9 @@ const managerInfo = () => {
     ])
        
         
-        //     .then(managerData => {
-        //     console.log(managerData)
-        //     employeesArray.push(new Manager(managerData));
-        //     // employeesArray.push(managerData);
-        //     newEmployee()
-        // });
+       
         .then(({employeeName, role, employeeId, employeeEmail, officeNumber }) => {
-           console.log(employeeName)
+        //    console.log(employeeName)
             employeesArray.push(new Manager(employeeName, role, employeeId, employeeEmail, officeNumber));
            
             newEmployee()
@@ -189,12 +184,7 @@ function getInternData() {
 
     ])
 
-        // .then(internData => {
-        //     employeesArray.push(new Intern(internData));
-        //     console.log(internData)
-        //     newEmployee()
-
-        // });
+      
         .then(({employeeName, role, employeeId, employeeEmail, school }) => {
             console.log(employeeName)
              employeesArray.push(new Intern(employeeName, role, employeeId, employeeEmail, school));
@@ -267,10 +257,7 @@ function getEngineerData() {
 
 
     ])
-        // .then(engineerData => {
-        //     employeesArray.push(new Engineer(engineerData));
-        //     console.log(engineerData)
-        //     newEmployee()
+      
         .then(({employeeName, role, employeeId, employeeEmail, Github }) => {
             console.log(employeeName)
              employeesArray.push(new Engineer(employeeName, role, employeeId, employeeEmail, Github));

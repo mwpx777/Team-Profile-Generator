@@ -1,7 +1,7 @@
 
 
 # **Team-Profile-Generator**   ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-## **In this weekly challenge, we had to create a Team Profile Generator using Nodejs and NPM Inquirer.  We also needed to run tests on the classes using Jest.**
+## **In this weekly challenge, we were tasked to create a Team Profile Generator using Node.js and NPM Inquirer.  We also needed to run tests on the classes using Jest.**
 
 ## **Table of Contents**
 
@@ -29,6 +29,9 @@
 
 ## **Deployed Application**
 https://mwpx777.github.io/Team-Profile-Generator/
+
+YouTube Video Walkthrough
+https://www.youtube.com/watch?v=SfLEumZQKBY&feature=youtu.be 
 
 ## **Screenshot**
 ![screenshot](assets/screencapture.png)

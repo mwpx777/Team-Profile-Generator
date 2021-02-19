@@ -6,7 +6,7 @@ const { writeFile, copyFile } = require('./src/generate-site.js');
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
 const Manager = require('./lib/Manager')
-const Employee = require('./lib/Employee')
+// const Employee = require('./lib/Employee')
 let employeesArray = [];
 
 
@@ -59,12 +59,7 @@ const managerInfo = () => {
             message: "Please verify the employee's role",
             default: 'Manager'
         },
-        {
-            type: 'input',
-            name: 'teamName',
-            message: "Please enter a team name",
-
-        },
+   
         {
             type: 'input',
             name: 'employeeId',
@@ -111,11 +106,19 @@ const managerInfo = () => {
     ])
        
         
-            .then(managerData => {
-            console.log(managerData)
-            employeesArray.push(new Manager(managerData));
+        //     .then(managerData => {
+        //     console.log(managerData)
+        //     employeesArray.push(new Manager(managerData));
+        //     // employeesArray.push(managerData);
+        //     newEmployee()
+        // });
+        .then(({employeeName, role, employeeId, employeeEmail, officeNumber }) => {
+           console.log(employeeName)
+            employeesArray.push(new Manager(employeeName, role, employeeId, employeeEmail, officeNumber));
+           
             newEmployee()
         });
+       
        
 };
 
@@ -186,13 +189,18 @@ function getInternData() {
 
     ])
 
-        .then(internData => {
-            employeesArray.push(new Intern(internData));
-            console.log(internData)
-            newEmployee()
+        // .then(internData => {
+        //     employeesArray.push(new Intern(internData));
+        //     console.log(internData)
+        //     newEmployee()
 
-        });
-};
+        // });
+        .then(({employeeName, role, employeeId, employeeEmail, school }) => {
+            console.log(employeeName)
+             employeesArray.push(new Intern(employeeName, role, employeeId, employeeEmail, school));
+            
+             newEmployee()
+})};
 
 function getEngineerData() {
     // console.log(employeeInfo);
@@ -259,10 +267,16 @@ function getEngineerData() {
 
 
     ])
-        .then(engineerData => {
-            employeesArray.push(new Engineer(engineerData));
-            console.log(engineerData)
-            newEmployee()
+        // .then(engineerData => {
+        //     employeesArray.push(new Engineer(engineerData));
+        //     console.log(engineerData)
+        //     newEmployee()
+        .then(({employeeName, role, employeeId, employeeEmail, Github }) => {
+            console.log(employeeName)
+             employeesArray.push(new Engineer(employeeName, role, employeeId, employeeEmail, Github));
+            
+             newEmployee()
+
 
        });
 

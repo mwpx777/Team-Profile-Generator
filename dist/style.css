@@ -28,7 +28,7 @@ h1 {
 
 #icon {
     align-items: center;
-    padding-top: 1rem;
+    padding-right: 1rem;
     font-size: 2rem;
 }
 
@@ -40,4 +40,9 @@ h1 {
 }
 .page-title {
     box-shadow: 5px 5px 10px rgb(15, 15, 15);
+}
+.nameCard {
+    display:flex;
+    
+    align-items:center;
 }

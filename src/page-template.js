@@ -3,24 +3,32 @@ const generateEmployees = employeesArray => {
     return `
    
         ${employeesArray
-            .map(({ employeeName, employeeEmail, role, employeeId, school, Github, officeNumber, teamName }) => {
-            return `
+            .map(({ employeeName,  employeeId, employeeEmail, role, officeNumber, school, Github }) => {
+                this.employeeName = employeeName
+                this.role = role
+                this.employeeId = employeeId
+                this.employeeEmail = employeeEmail
+                this.officeNumber = officeNumber
+                this.school = school
+                this.Github = Github
+                return `
             
             <div class="card border-primary" style="width: 18rem;">
             <div class="card-body bg-primary text-light">
-                <h3 class="card-title">${employeeName}</h3>
-                ${displayTeam(teamName)}
-                <div class="personTitle">
-                   ${createIcon(role)}
-                    <h5 class="title"> ${role}</h5>
+                <h3 class="card-title">${this.employeeName}</h3>
+                    <div class="personTitle">
+                    <div class= "nameCard">
+                    ${createIcon(role)} 
+                    </div>
+                    
                 </div>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${employeeId}</li>
-                <li class="list-group-item">Email: <a href="mailto:${employeeEmail}">${employeeEmail}</a></li>
-                ${displayOffice(officeNumber)}
-                ${displaySchool(school)}
-                ${displayGithub(Github)}
+                <li class="list-group-item">ID: ${this.employeeId}</li>
+                <li class="list-group-item">Email: <a href="mailto:${this.employeeEmail}">${this.employeeEmail}</a></li>
+                ${displayOffice(this.officeNumber)}
+                ${displaySchool(this.school)}
+                ${displayGithub(this.Github)}
                
                
             </ul>
@@ -33,9 +41,6 @@ const generateEmployees = employeesArray => {
 }
 
 module.exports = employeesArray => {
-
-   
-
 
     return `
     <!DOCTYPE html> 
@@ -71,11 +76,12 @@ module.exports = employeesArray => {
 
 function createIcon(role) {
     if (role == 'Intern') {
-        return `<i class="fas fa-user-graduate" id="icon"></i>`
-    } else if (role == "Engineer"){
-        return `<i class="fas fa-laptop-code" id="icon"></i>`
-    }else {(role == 'Manager') 
-        return `<i class="fas fa-coffee" id="icon"></i>`
+        return `<i class="fas fa-user-graduate" id="icon"></i><h3> Intern</h3>`
+    } else if (role == "Engineer") {
+        return `<i class="fas fa-laptop-code" id="icon"></i><h3> Engineer</h3>`
+    } else {
+        (role == 'Manager')
+        return `<i class="fas fa-coffee" id="icon"></i><h3> Manager</h3>`
     }
 }
 
@@ -90,7 +96,7 @@ function displaySchool(school) {
 }
 
 function displayGithub(Github) {
-    if (!Github == '' ) {
+    if (!Github == '') {
         return `<li class="list-group-item">Github: <a href="https://github.com/${Github}" target="_blank">${Github}</a></li>`
     } else {
         return ``
@@ -105,10 +111,3 @@ function displayOffice(officeNumber) {
     }
 }
 
-function displayTeam(teamName) {
-    if (!teamName == '') {
-        return `<h4> ${teamName}</h4>`
-    } else {
-        return ``
-    }
-}

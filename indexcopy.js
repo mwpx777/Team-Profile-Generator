@@ -10,35 +10,36 @@ const Employee = require('./lib/Employee')
 let employeesArray = [];
 
 
-const newEmployee = () => {
-    return inquirer.prompt([
+
+function newEmployee(){
+     inquirer.prompt([
         {
             type: 'list',
             name: 'role',
             message: "Welcome to the Team Profile Generator! Please make a selection",
-            choices: ['Manager', 'Intern', 'Engineer', 'Complete Roster'],
+            choices: [ 'Manager','Intern', 'Engineer' , 'Complete Roster'],
         }])
         .then(({ role }) => {
 
             if (role === 'Intern') {
-                getInternData()
+                getInternData(role)
 
             } else if (role === 'Complete Roster') {
                 finishRoster()
 
-            } else if (role === 'Engineer') {
-                getEngineerData()
+            } else if (role === 'Engineer'){
+                 getEngineerData(role)
 
-            } else {
-                (role === "Manager")
-                managerInfo()
+            }else { (role === "Manager") 
+                managerInfo(role)
 
             }
         })
 };
 
-const managerInfo = () => {
-
+const managerInfo = (role) => {
+    
+    console.log(this.role)
     return inquirer.prompt([
         {
             type: 'input',
@@ -54,16 +55,16 @@ const managerInfo = () => {
             }
         },
         {
-            type: 'prompt',
-            name: 'role',
-            message: "Please verify the employee's role",
-            default: 'Manager'
+        type: 'prompt',
+        name: 'role',
+        message: "Please verify the employee's role",
+        default: 'Manager'
         },
         {
             type: 'input',
             name: 'teamName',
             message: "Please enter a team name",
-
+           
         },
         {
             type: 'input',
@@ -109,19 +110,16 @@ const managerInfo = () => {
             }
         },
     ])
-       
+    .then(managerData => {
         
-            .then(managerData => {
-            console.log(managerData)
-            employeesArray.push(new Manager(managerData));
-            newEmployee()
-        });
-       
+        employeesArray.push(managerData);
+        console.log(managerData)
+        newEmployee()
+    });
 };
 
 
-
-function getInternData() {
+function getInternData(role) {
     // console.log(employeeInfo);
 
     return inquirer.prompt([
@@ -182,19 +180,17 @@ function getInternData() {
             name: 'school',
             message: "Please enter name of the Intern's school"
         },
-
+     
 
     ])
-
-        .then(internData => {
-            employeesArray.push(new Intern(internData));
-            console.log(internData)
+        .then(getInternData => {
+            employeesArray.push(getInternData);
+            console.log(employeesArray)
             newEmployee()
-
         });
 };
 
-function getEngineerData() {
+function getEngineerData(role) {
     // console.log(employeeInfo);
     return inquirer.prompt([
 
@@ -256,35 +252,35 @@ function getEngineerData() {
             name: 'Github',
             message: "Please enter Engineer's Github username"
         },
-
+   
 
     ])
-        .then(engineerData => {
-            employeesArray.push(new Engineer(engineerData));
-            console.log(engineerData)
+        .then(getEngineerData => {
+            employeesArray.push(getEngineerData);
+            console.log(employeesArray)
             newEmployee()
 
-       });
+        });
 
 };
 
 
 newEmployee()
-
+ 
 function finishRoster() {
+    
+        // console.log('employeesArray', employeesArray)
+        const pageHTML = generatePage(employeesArray)
 
-    // console.log('employeesArray', employeesArray)
-    const pageHTML = generatePage(employeesArray)
+        fs.writeFile('./dist/index.html', pageHTML, err => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log("Page created! Please check out index.html")
 
-    fs.writeFile('./dist/index.html', pageHTML, err => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        console.log("Page created! Please check out index.html")
-
-
-    });
-};
+         
+        });
+    };
 
 
